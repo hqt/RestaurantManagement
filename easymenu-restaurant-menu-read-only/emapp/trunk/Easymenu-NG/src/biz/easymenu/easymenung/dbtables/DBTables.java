@@ -1,0 +1,135 @@
+/*******************************************************************************
+ * Copyright 2012 Gianrico D'Angelis  -- gianrico.dangelis@gmail.com
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ******************************************************************************/
+package biz.easymenu.easymenung.dbtables;
+
+import android.provider.BaseColumns;
+
+public class DBTables {
+
+	DBTables(){
+		
+	}
+	
+	public static final class Menus implements BaseColumns{
+		
+		private Menus(){}
+		
+		public static final String TAG = "menus";
+		
+		public static final String ID_MENUS = "_id";
+		public static final String LABEL = "label";
+		public static final String DESCRIPTION = "description";
+		public static final String ID_IMAGE = "idImage";
+		public static final String EXTRAS = "extras";
+		public static final String PRICE = "price";
+		public static final String VISIBLE = "visible";
+		public static final String MENU_TYPE = "menuType";
+		public static final String FOODBEV_FLAG = "foodbev";
+		public static final String MENU_POSITION = "position";
+		
+		public static final String CREATE_STATEMENT ="CREATE TABLE "+TAG+" ("+ID_MENUS
+		+" INTEGER PRIMARY KEY AUTOINCREMENT,"+LABEL+" TEXT,"+DESCRIPTION+" TEXT,"+ID_IMAGE+" INTEGER,"
+		+EXTRAS+" TEXT,"+PRICE+" TEXT,"+VISIBLE+" TEXT,"+MENU_TYPE+" TEXT,"+FOODBEV_FLAG+" TEXT,"+MENU_POSITION+" INTEGER);";
+		
+	}
+	
+	public static final class Categories implements BaseColumns{
+		
+		private Categories(){}
+		
+		public static final String TAG = "categories";
+		
+		public static final String ID_CATEGORIES = "_id";
+		public static final String LABEL = "label";
+		public static final String DESCRIPTION = "description";
+		public static final String ID_IMAGE = "idImage";
+		public static final String EXTRAS = "extras";
+		
+		public static final String CREATE_STATEMENT = "CREATE TABLE "+TAG+" ("+ID_CATEGORIES
+			+" INTEGER PRIMARY KEY AUTOINCREMENT,"+LABEL+" TEXT,"+DESCRIPTION+" TEXT,"+ID_IMAGE+" INTEGER,"
+			+EXTRAS+" TEXT);";
+		
+	}
+	
+	public static final class Items implements BaseColumns{
+		
+		private Items(){}
+		
+		public static final String TAG = "items";
+
+		public static final String ID_ITEMS = "_id";
+		public static final String LABEL = "label";
+		public static final String DESCRIPTION = "description";
+		public static final String ID_IMAGE = "idImage";
+		public static final String PRICE = "price";
+		public static final String EXTRAS = "extras";
+		
+		public static final String CREATE_STATEMENT = "CREATE TABLE "+TAG+" ("+ID_ITEMS
+			+" INTEGER PRIMARY KEY AUTOINCREMENT,"+LABEL+" TEXT,"+DESCRIPTION+" TEXT,"+ID_IMAGE+" INTEGER,"
+			+PRICE+" TEXT,"+EXTRAS+" TEXT);";
+	}
+	
+	public static final class MenuLists implements BaseColumns{
+		
+		private MenuLists(){}
+		
+		public static final String TAG = "menulists";
+
+		public static final String ID_MENULISTS = "_id";
+		public static final String FK_IDMENUS = "fk_idMenus";
+		public static final String FK_IDCATEGORIES = "fk_idCategories";
+		public static final String FK_IDITEMS = "fk_idItems";
+		public static final String PRICE = "price";
+		public static final String CATEGORY_POS = "categoryPosition";
+		public static final String ITEM_POS = "itemPosition";
+		
+		public static final String CREATE_STATEMENT = "CREATE TABLE "+TAG+" ("+ID_MENULISTS
+			+" INTEGER PRIMARY KEY AUTOINCREMENT,"+FK_IDMENUS+" INTEGER,"+FK_IDCATEGORIES+" INTEGER,"
+			+FK_IDITEMS+" INTEGER,"+PRICE+" TEXT,"+CATEGORY_POS+" INTEGER,"
+			+ITEM_POS+" INTEGER);";
+		
+	}
+	
+	public static final class Images implements BaseColumns{
+		
+		private Images(){}
+		
+		public static final String TAG = "images";
+		
+		public static final String ID_IMAGES = "_id";
+		
+		public static final String CREATE_STATEMENT = "CREATE TABLE "+TAG+" ("+ID_IMAGES
+			+" INTEGER PRIMARY KEY AUTOINCREMENT)";
+		
+	}
+	
+	
+	public static final class Config implements BaseColumns{
+		
+		private Config(){}
+		
+		public static final String TAG = "config";
+		
+		public static final String ID_CONFIG = "_id";
+		public static final String DEVICE = "device";
+		public static final String KEY = "key";
+		public static final String VALUE = "value";
+		
+		public static final String CREATE_STATEMENT = "CREATE TABLE "+TAG+" ("+ID_CONFIG
+			+" INTEGER PRIMARY KEY AUTOINCREMENT, "+DEVICE+" TEXT, "+KEY+" TEXT, "+VALUE+" TEXT)";
+		
+	}
+}

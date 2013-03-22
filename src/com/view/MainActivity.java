@@ -3,6 +3,7 @@ package com.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
 /**
  * An activity representing a list of Items. This activity has different
@@ -75,16 +76,23 @@ public class MainActivity extends FragmentActivity implements ItemListFragment.C
 				case MENU:
 					break;
 				case ORDER:
+					LoginFragment fragment2 = new LoginFragment();
+					Log.i("tag", "step one");
+					fragment2.setArguments(arguments);
+					getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, fragment2).commit();
+					/*ItemDetailFragment fragmentSpec = new ItemDetailFragment();
+					fragmentSpec.setArguments(arguments);
+					getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, fragmentSpec).commit();*/
 					break;
 					// from this will not implement
 				case WAITER:
 				case COOK:
 				case MANAGER:
 				case ABOUT:
-					ItemDetailFragment fragment = new ItemDetailFragment();
-					fragment.setArguments(arguments);
-					getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, fragment).commit();
-					break;
+					/*ItemDetailFragment fragmentSpec = new ItemDetailFragment();
+					fragmentSpec.setArguments(arguments);
+					getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, fragmentSpec).commit();
+					break;*/
 			}
 		} else {
 			/* 

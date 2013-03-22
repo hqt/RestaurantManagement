@@ -19,14 +19,24 @@ import android.support.v4.app.FragmentActivity;
  * This activity also implements the required {@link ItemListFragment.Callbacks}
  * interface to listen for item selections.
  */
-public class MainActivity extends FragmentActivity implements
-		ItemListFragment.Callbacks {
+public class MainActivity extends FragmentActivity implements ItemListFragment.Callbacks {
+	
+	/** using enum for switch case */
+	public static enum LeftMenuCategories {
+	    MENU,
+	    ORDER,
+	    WAITER,
+	    COOK,
+	    MANAGER,
+	    ABOUT
+	  }
 
-	/**
-	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-	 * device.
-	 */
 	private boolean mTwoPane;
+	
+	/** load all data need from server */
+	public MainActivity() {
+		
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +56,6 @@ public class MainActivity extends FragmentActivity implements
 					R.id.item_list)).setActivateOnItemClick(true);
 		}
 
-		// TODO: If exposing deep links into your app, handle intents here.
 	}
 
 	/**
@@ -57,21 +66,47 @@ public class MainActivity extends FragmentActivity implements
 	public void onItemSelected(String id) {
 		if (mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by
-			// adding or replacing the detail fragment using a
-			// fragment transaction.
+			// adding or replacing the detail fragment using a fragment transaction.
 			Bundle arguments = new Bundle();
-			arguments.putString(ItemDetailFragment.ARG_ITEM_ID, id);
-			ItemDetailFragment fragment = new ItemDetailFragment();
-			fragment.setArguments(arguments);
-			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.item_detail_container, fragment).commit();
-
+			arguments.putString(ItemDetailFragment.ARG_ITEM_ID, id); // ("item_id", id)
+			
+			LeftMenuCategories choice = LeftMenuCategories.valueOf(id.toUpperCase());
+			switch (choice) {
+				case MENU:
+					break;
+				case ORDER:
+					break;
+					// from this will not implement
+				case WAITER:
+				case COOK:
+				case MANAGER:
+				case ABOUT:
+					ItemDetailFragment fragment = new ItemDetailFragment();
+					fragment.setArguments(arguments);
+					getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, fragment).commit();
+					break;
+			}
 		} else {
-			// In single-pane mode, simply start the detail activity
-			// for the selected item ID.
-			Intent detailIntent = new Intent(this, ItemDetailActivity.class);
-			detailIntent.putExtra(ItemDetailFragment.ARG_ITEM_ID, id);
-			startActivity(detailIntent);
+			/* 
+			 * In single-pane mode, simply start the detail activity for the selected item ID.
+			 * Using intent to call another activity
+			 */
+			LeftMenuCategories choice = LeftMenuCategories.valueOf(id.toUpperCase());
+			switch (choice) {
+				case MENU:
+					break;
+				case ORDER:
+					break;
+					// from this will not implement
+				case WAITER:
+				case COOK:
+				case MANAGER:
+				case ABOUT:
+					Intent detailIntent = new Intent(this, ItemDetailActivity.class);
+					detailIntent.putExtra(ItemDetailFragment.ARG_ITEM_ID, id);
+					startActivity(detailIntent);
+					break;
+			}
 		}
 	}
 }

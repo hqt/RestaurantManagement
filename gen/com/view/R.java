@@ -26,14 +26,20 @@ public final class R {
         public static final int repeat_bg=0x7f020002;
     }
     public static final class id {
-        public static final int action_settings=0x7f080007;
-        public static final int btnLogin=0x7f080005;
-        public static final int footer=0x7f080004;
-        public static final int header=0x7f080003;
-        public static final int item_detail=0x7f080002;
+        public static final int action_settings=0x7f08000d;
+        public static final int btnLogin=0x7f080008;
+        public static final int footer=0x7f080005;
+        public static final int gridView1=0x7f080002;
+        public static final int grid_item_image=0x7f08000a;
+        public static final int grid_item_label=0x7f08000b;
+        public static final int header=0x7f080004;
+        public static final int item_detail=0x7f080003;
         public static final int item_detail_container=0x7f080000;
         public static final int item_list=0x7f080001;
-        public static final int link_to_register=0x7f080006;
+        public static final int label=0x7f08000c;
+        public static final int link_to_register=0x7f080009;
+        public static final int txtPassword=0x7f080007;
+        public static final int txtUser=0x7f080006;
     }
     public static final class layout {
         public static final int activity_item_detail=0x7f030000;
@@ -54,18 +60,23 @@ public final class R {
          */
         public static final int activity_item_list=0x7f030001;
         public static final int activity_item_twopane=0x7f030002;
-        public static final int footer_repeat=0x7f030003;
-        public static final int fragment_item_detail=0x7f030004;
-        public static final int fragment_login=0x7f030005;
-        public static final int header_gradient=0x7f030006;
+        public static final int category_fragment=0x7f030003;
+        public static final int dish_view=0x7f030004;
+        public static final int footer_repeat=0x7f030005;
+        public static final int fragment_item_detail=0x7f030006;
+        public static final int fragment_login=0x7f030007;
+        public static final int header_gradient=0x7f030008;
+        public static final int mobile=0x7f030009;
     }
     public static final class menu {
-        public static final int login=0x7f070000;
+        public static final int category=0x7f070000;
+        public static final int login=0x7f070001;
     }
     public static final class string {
         public static final int action_settings=0x7f050003;
         public static final int app_name=0x7f050000;
         public static final int hello_world=0x7f050004;
+        public static final int title_activity_category_fragment=0x7f050005;
         public static final int title_activity_login=0x7f050002;
         public static final int title_item_detail=0x7f050001;
     }

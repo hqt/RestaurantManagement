@@ -1,0 +1,43 @@
+P2PTV
+Advantage
+no increase cost for source
+Disadvantage
+delay 
+quanlity depends of number of people is watching
+Android : 
+opensource --> manufacturer can easily modify and use it with nocost
+cost --> from low end to high end --> more people to use
+app --> more easily install (does not need from google play), can install offline
+Developer :
+multiOS platform
+java language
+cheaper developed cost (can test on vast of devices)
+RIA 
+web application (browser plugin such as flash, HTML5/javascript, silverlight)
+Software-as-service
+Benefit:
+not depend on OS
+mobilibility
+more easily for sharing data
+Trend
+more and more people to use
+future : when mobile increase, desktop apps will not own an important role, device can connect internet easily,, RIA times by times will increase rapidly.
+Cloud Computing
+advantages : 
+can buy power of hardware, not hardware
+can buy time use of software, not sofware,  minimize license software
+-> cheaper, reduce cost
+reduce spending on technology infrastructure
+flexibility
+less training
+dont care about hardware, configurattion, maintaince system ....
+globalize workforce
+
+Opensource
+many people contribute -> found and fix quickly
+update and patches
+more code review, more testing (more practiced and appreciate)	
+
+wire network
+wifi
+3g

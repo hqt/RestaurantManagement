@@ -34,6 +34,15 @@
             android:name="com.view.LoginFragment"
             android:label="@string/title_activity_login" >
         </activity>
+        <activity
+            android:name="com.view.CategoryFragment"
+            android:label="@string/title_activity_category_fragment" >
+        </activity>
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" >
+    </uses-permission>
 
 </manifest>

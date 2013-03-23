@@ -1,4 +1,6 @@
 Server::Application.routes.draw do
+  resources :products
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -49,6 +51,7 @@ Server::Application.routes.draw do
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
   # root :to => 'welcome#index'
+  match 'myfile' => 'myfile.erb'
 
   # See how all your routes lay out with "rake routes"
 

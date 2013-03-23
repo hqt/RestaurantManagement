@@ -37,6 +37,8 @@ public class MainActivity extends FragmentActivity implements ItemListFragment.C
 	/** load all data need from server */
 	public MainActivity() {
 		
+		// read data
+		
 	}
 
 	@Override
@@ -74,25 +76,26 @@ public class MainActivity extends FragmentActivity implements ItemListFragment.C
 			LeftMenuCategories choice = LeftMenuCategories.valueOf(id.toUpperCase());
 			switch (choice) {
 				case MENU:
+					CategoryFragment fragment1 = new CategoryFragment();
+					Log.i("tag", "step one");
+					fragment1.setArguments(arguments);
+					getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, fragment1).commit();
 					break;
 				case ORDER:
 					LoginFragment fragment2 = new LoginFragment();
 					Log.i("tag", "step one");
 					fragment2.setArguments(arguments);
 					getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, fragment2).commit();
-					/*ItemDetailFragment fragmentSpec = new ItemDetailFragment();
-					fragmentSpec.setArguments(arguments);
-					getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, fragmentSpec).commit();*/
 					break;
 					// from this will not implement
 				case WAITER:
 				case COOK:
 				case MANAGER:
 				case ABOUT:
-					/*ItemDetailFragment fragmentSpec = new ItemDetailFragment();
+					ItemDetailFragment fragmentSpec = new ItemDetailFragment();
 					fragmentSpec.setArguments(arguments);
 					getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, fragmentSpec).commit();
-					break;*/
+					break;
 			}
 		} else {
 			/* 

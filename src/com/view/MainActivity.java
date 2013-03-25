@@ -1,9 +1,17 @@
 package com.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.model.Dish;
+import com.model.Model;
+import com.view.menu.CategoryFragment;
 
 /**
  * An activity representing a list of Items. This activity has different
@@ -29,21 +37,33 @@ public class MainActivity extends FragmentActivity implements ItemListFragment.C
 	    WAITER,
 	    COOK,
 	    MANAGER,
-	    ABOUT
+	    SETTING,
+	    ABOUT,
+	    ACCEPT
 	  }
 
 	private boolean mTwoPane;
+	Model model;
+	public List<Dish> dishes;
+	public List<Dish> currentDishes = new ArrayList<Dish>();
 	
 	/** load all data need from server */
 	public MainActivity() {
-		
-		// read data
 		
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		
+		// read data
+		model = new Model(this);
+		model.parsingJSONFood();
+		dishes = model.getDishes();
+		
+		// download all image
+		
 		setContentView(R.layout.activity_item_list);
 
 		if (findViewById(R.id.item_detail_container) != null) {
@@ -58,7 +78,11 @@ public class MainActivity extends FragmentActivity implements ItemListFragment.C
 			((ItemListFragment) getSupportFragmentManager().findFragmentById(
 					R.id.item_list)).setActivateOnItemClick(true);
 		}
-
+		
+		// debug information
+		/*Toast.makeText(getApplicationContext(),
+				   "Size of dishes: " + dishes.size(), 
+				   Toast.LENGTH_LONG).show();*/
 	}
 
 	/**
@@ -96,6 +120,8 @@ public class MainActivity extends FragmentActivity implements ItemListFragment.C
 					fragmentSpec.setArguments(arguments);
 					getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, fragmentSpec).commit();
 					break;
+			default:
+				break;
 			}
 		} else {
 			/* 
@@ -117,7 +143,14 @@ public class MainActivity extends FragmentActivity implements ItemListFragment.C
 					detailIntent.putExtra(ItemDetailFragment.ARG_ITEM_ID, id);
 					startActivity(detailIntent);
 					break;
+			default:
+				break;
 			}
 		}
+	}
+	
+	public List<Dish> getDish() { return dishes; }
+	public void setCurrentDish(List<Dish> currentDishes) { 
+		this.currentDishes = currentDishes;
 	}
 }

@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  DishID: 1
+  DishName: MyString
+  Price: 9.99
+  Discount: 9.99
+  Currency: MyString
+  Tag: MyString
+  DishImage: MyString
+  Description: MyText
+
+two:
+  DishID: 1
+  DishName: MyString
+  Price: 9.99
+  Discount: 9.99
+  Currency: MyString
+  Tag: MyString
+  DishImage: MyString
+  Description: MyText

@@ -1,42 +1,61 @@
 package com.model;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.res.AssetManager;
+import android.util.Log;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.helper.JSONParser;
+import com.view.MainActivity;
+import com.view.R;
 
 public class Model {
 	
+	MainActivity activity;
+	public Model(MainActivity activity) {
+		this.activity = activity;
+	}
+	
 	// url to make request
-	private static String url = "http://api.androidhive.info/contacts/";
+	private static String url = "http://10.0.2.2:3000/dishes.json";
 	 
 	// JSON Node names
-	private static final String TAG_CONTACTS = "contacts";
-	private static final String TAG_ID = "id";
-	private static final String TAG_NAME = "name";
-	private static final String TAG_EMAIL = "email";
-	private static final String TAG_ADDRESS = "address";
-	private static final String TAG_GENDER = "gender";
-	private static final String TAG_PHONE = "phone";
-	private static final String TAG_PHONE_MOBILE = "mobile";
-	private static final String TAG_PHONE_HOME = "home";
-	private static final String TAG_PHONE_OFFICE = "office";
-	 
-	// contacts JSONArray
-	JSONArray contacts = null;
+	private static final String TAG_ID = "DishID";
+	private static final String TAG_NAME = "DishName";
+	private static final String TAG_DESCRIPTION = "Description";
+	private static final String TAG_PRICE = "Price";
+	private static final String TAG_DISH_IMAGE = "DishImage";
+	private static final String TAG_CURRENCY = "Currency";
+	private static final String TAG_TAG = "Tag";
+	private static final String TAG_DISCOUNT = "Discount";
 	
+	// contacts JSONArray
+	JSONArray dishes = null;
+	ArrayList<HashMap<String, String>> category;
+	List<Dish> food;
+	String sample = "";
 	
 	/**
 	 * parse real json
 	 */
-	public void Parsing() {
+	public void parsingJSONFood() {
 
 		// Hashmap for ListView
         ArrayList<HashMap<String, String>> contactList = new ArrayList<HashMap<String, String>>();
+        
+        // ArrayList food
+        food = new ArrayList<Dish>();
  
         // Creating JSON Parser instance
         JSONParser jParser = new JSONParser();
@@ -45,44 +64,74 @@ public class Model {
          * getting json from url
          * this networking code is hard and done by JSONParse class
          */
-        JSONObject json = jParser.getJSONFromUrl(url);
- 
-        try {
-            // Getting Array of Contacts
-            contacts = json.getJSONArray(TAG_CONTACTS);
- 
+        // JSONObject json = jParser.getJSONFromUrl(url);
+        readFromFile();
+        
+        JSONObject json = null;
+		try {
+			json = new JSONObject(sample);
+		} catch (JSONException e1) {
+			e1.printStackTrace();
+		}
+        
+		try {       
+			
+            // Getting Array of Foods
+            dishes = new JSONArray(sample);
+            
             // looping through All Contacts
-            for(int i = 0; i < contacts.length(); i++){
-                JSONObject c = contacts.getJSONObject(i);
+            for(int i = 0; i < dishes.length(); i++){
+                JSONObject c = dishes.getJSONObject(i);
  
                 // Storing each json item in variable
-                String id = c.getString(TAG_ID);
+                int id = c.getInt(TAG_ID);
                 String name = c.getString(TAG_NAME);
-                String email = c.getString(TAG_EMAIL);
-                String address = c.getString(TAG_ADDRESS);
-                String gender = c.getString(TAG_GENDER);
- 
-                // Phone number is agin JSON Object
-                JSONObject phone = c.getJSONObject(TAG_PHONE);
-                String mobile = phone.getString(TAG_PHONE_MOBILE);
-                String home = phone.getString(TAG_PHONE_HOME);
-                String office = phone.getString(TAG_PHONE_OFFICE);
- 
+                String description = c.getString(TAG_DESCRIPTION);
+                double price = c.getDouble(TAG_PRICE);
+                String dish_image = c.getString(TAG_DISH_IMAGE);
+                String currency = c.getString(TAG_CURRENCY);
+                String tag = c.getString(TAG_TAG);
+                double discount = c.getDouble(TAG_DISCOUNT);
+                
                 // creating new HashMap
                 HashMap<String, String> map = new HashMap<String, String>();
  
                 // adding each child node to HashMap key => value
-                map.put(TAG_ID, id);
+                map.put(TAG_ID, id + "");
                 map.put(TAG_NAME, name);
-                map.put(TAG_EMAIL, email);
-                map.put(TAG_PHONE_MOBILE, mobile);
- 
+                map.put(TAG_DESCRIPTION, description);
+                map.put(TAG_PRICE, price + "");
+                map.put(TAG_DISH_IMAGE, dish_image);
+                map.put(TAG_CURRENCY, currency);
+                map.put(TAG_TAG, tag);
+                map.put(TAG_DISCOUNT, discount + "");
+                
                 // adding HashList to ArrayList
                 contactList.add(map);
+                Dish dish = new Dish(id, name, description, price,
+                			discount, currency, tag, dish_image);
+                food.add(dish);
+                
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 	}
+	
+	public void readFromFile() {
+		AssetManager am = activity.getAssets();
+		try {
+			InputStream is = am.open("sample.json");
+			Scanner scanner = new Scanner(is);
+			sample = scanner.nextLine();
+			
+			Log.d("Debug", sample);
+			
+		} catch (IOException e) {
+			Log.i("error", "Cannot read file");
+		}
+	}
+	
+	public List<Dish> getDishes() { return food; }
 
 }

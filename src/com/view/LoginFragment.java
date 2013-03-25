@@ -43,6 +43,7 @@ public class LoginFragment extends Fragment {
 				if (username.equals("root") && password.equals("duyeu")) {
 					Bundle arguments = new Bundle();
 					ItemDetailFragment fragmentSpec = new ItemDetailFragment();
+					fragmentSpec.setArguments(arguments);
 					getActivity().
 					getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, fragmentSpec).commit();
 				}

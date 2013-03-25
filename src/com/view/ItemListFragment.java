@@ -32,7 +32,7 @@ public class ItemListFragment extends ListFragment {
 	private Callbacks mCallbacks = sDummyCallbacks;
 	
 	/** MainActivity for reference */
-	private MainActivity activity;
+	public MainActivity activity;
 	
 	/**
 	 * A callback interface that all activities containing this fragment must

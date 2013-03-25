@@ -35,8 +35,16 @@
             android:label="@string/title_activity_login" >
         </activity>
         <activity
-            android:name="com.view.CategoryFragment"
+            android:name="com.view.menu.CategoryFragment"
             android:label="@string/title_activity_category_fragment" >
+        </activity>
+        <activity
+            android:name="com.view.FoodDetailList"
+            android:label="@string/title_activity_food_detail_list" >
+        </activity>
+        <activity
+            android:name="com.view.menu.DishSelectionFragment"
+            android:label="@string/title_activity_dish_selection_fragment" >
         </activity>
     </application>
 

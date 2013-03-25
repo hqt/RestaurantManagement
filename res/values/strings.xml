@@ -7,5 +7,7 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_category_fragment">CategoryFragment</string>
+    <string name="title_activity_food_detail_list">FoodDetailList</string>
+    <string name="title_activity_dish_selection_fragment">DishSelectionFragment</string>
 
 </resources>

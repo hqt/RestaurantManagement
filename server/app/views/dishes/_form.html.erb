@@ -1,0 +1,49 @@
+<%= form_for(@dish) do |f| %>
+  <% if @dish.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@dish.errors.count, "error") %> prohibited this dish from being saved:</h2>
+
+      <ul>
+      <% @dish.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :DishID %><br />
+    <%= f.number_field :DishID %>
+  </div>
+  <div class="field">
+    <%= f.label :DishName %><br />
+    <%= f.text_field :DishName %>
+  </div>
+  <div class="field">
+    <%= f.label :Price %><br />
+    <%= f.text_field :Price %>
+  </div>
+  <div class="field">
+    <%= f.label :Discount %><br />
+    <%= f.text_field :Discount %>
+  </div>
+  <div class="field">
+    <%= f.label :Currency %><br />
+    <%= f.text_field :Currency %>
+  </div>
+  <div class="field">
+    <%= f.label :Tag %><br />
+    <%= f.text_field :Tag %>
+  </div>
+  <div class="field">
+    <%= f.label :DishImage %><br />
+    <%= f.text_field :DishImage %>
+  </div>
+  <div class="field">
+    <%= f.label :Description %><br />
+    <%= f.text_area :Description %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

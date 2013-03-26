@@ -80,4 +80,11 @@ class DishesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def mymethod
+    @dish = Dish.find(params[:id])
+    #format.html{ redirect_to @dish, notice:'Dish was successfully read' }
+    #format.json {render json: @dish.dishes_path}
+  end
+
 end

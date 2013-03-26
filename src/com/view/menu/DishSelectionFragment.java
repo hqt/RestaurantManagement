@@ -7,11 +7,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,13 +19,14 @@ import com.model.Dish;
 import com.view.MainActivity;
 import com.view.R;
 
-public class DishSelectionFragment extends Fragment {
+public class DishSelectionFragment extends Fragment {    
 
 	
 	GridView gridView;
 	List<Dish> dishes;
-	MainActivity activity;
 	
+	MainActivity activity;
+	TextView txtPrice;
 	String[] CATEGORIES;
 	
 	static final String[] SAMPLE = new String[] {
@@ -60,10 +59,10 @@ public class DishSelectionFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.dish_selection_fragment, container, false);
 		
 		gridView = (GridView) (rootView).findViewById(R.id.gridView2);
-		gridView.setAdapter(new ImageAdapterDish(getActivity(), activity.currentDishes));
+		gridView.setAdapter(new ImageAdapterDish(this, getActivity(), activity.currentDishes));
 		
-		TextView textView = (TextView) (rootView).findViewById(R.id.text_price_dish);
-		textView.setText("HuynhQuangThao");
+		txtPrice = (TextView) (rootView).findViewById(R.id.text_price_dish);
+		txtPrice.setText("HuynhQuangThao");
 		
 		gridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -77,16 +76,11 @@ public class DishSelectionFragment extends Fragment {
 			}
 		});
 		
-		/*CheckBox chkDish = (CheckBox) rootView.findViewById(R.id.chkDish);
-		chkDish.setOnClickListener(new OnClickListener() {
-		  @Override
-		  public void onClick(View v) {
-	 
-		  }
-		});*/
-		
 		return rootView;
- 
+	}
+	
+	public void setPriceText(double price) {
+		txtPrice.setText("Total Price: " + price);
 	}
 
 }

@@ -57,15 +57,18 @@ public class Model {
         // Creating JSON Parser instance
         JSONParser jParser = new JSONParser();
  
+        
         /**
          * getting json from url    
          * this networking code is hard and done by JSONParse class
          */
         // JSONObject json = jParser.getJSONFromUrl(url);
-        //String sample = jParser.getJSONFromUrl(url);
+        String sample = jParser.getJSONFromUrl(url);
         
         /** using read from file for testing pupose */
         readFromFile();
+        
+        
         
 		try {       
 			
@@ -109,6 +112,10 @@ public class Model {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+		
+		Log.i("Note", "Err");
+		
+		
 	}
 	
 	public void readFromFile() {

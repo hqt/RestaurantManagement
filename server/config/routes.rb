@@ -1,5 +1,9 @@
 Server::Application.routes.draw do
+  resources :temp_tables
+
   resources :dishes
+
+  match '/testDishes/:id', :controller=>'dishes', :action=>'mymethod'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

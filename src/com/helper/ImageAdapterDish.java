@@ -9,25 +9,33 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.model.Dish;
+import com.view.MainActivity;
 import com.view.R;
+import com.view.menu.DishSelectionFragment;
 
 public class ImageAdapterDish extends BaseAdapter {
 	private Context context;
+	DishSelectionFragment father;
+	MainActivity activity;
 	private final List<Dish> dishValues;
  
-	public ImageAdapterDish(Context context, List<Dish> dishValues) {
+	public ImageAdapterDish(DishSelectionFragment father, Context context, List<Dish> dishValues) {
 		this.context = context;
+		this.father = father;
+		this.activity = (MainActivity) activity;
 		this.dishValues = dishValues;
 	}
  
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
  
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
  
@@ -53,12 +61,7 @@ public class ImageAdapterDish extends BaseAdapter {
 			
 			// assign image base on 
 			String category_name = dishValues.get(position).getImage();
-
-			// int asset_id = context.getResources().getIdentifier("cocacola", "drawable", context.getPackageName());
-			// imageView.setImageResource(asset_id);
-			
 			AssetManager assetManager = context.getAssets();
-
 	        InputStream istr;   
 			try {
 				 istr = assetManager.open(category_name);
@@ -68,6 +71,20 @@ public class ImageAdapterDish extends BaseAdapter {
 			} catch (Exception e) {
 				Log.i("error", "Error when select icon");
 			}
+			
+			final CheckBox chkDish = (CheckBox) gridView.findViewById(R.id.chkDish);
+			chkDish.setOnClickListener(new OnClickListener() {
+			  @Override
+			  public void onClick(View v) {
+				  double discount = dishValues.get(position).getDiscount();
+
+				  if (chkDish.isChecked()) {
+					  activity.price += dishValues.get(position).getPrice() * (100 - discount) * 100;
+				  } else {
+					  activity.price -= dishValues.get(position).getPrice() * (100 - discount) * 100;
+				  }
+			  }
+			});
  
 		} else {
 			gridView = (View) convertView;

@@ -28,12 +28,12 @@ public class CategoryFragment extends Fragment {
 	
 	/** empty constructor */
 	public CategoryFragment() {
-
+		
 	}
  
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
- 
+
 		super.onCreate(savedInstanceState);
 	}
 	
@@ -70,7 +70,7 @@ public class CategoryFragment extends Fragment {
 				// create a new activity
 				Bundle arguments = new Bundle();
 				DishSelectionFragment fragmentSpec = new DishSelectionFragment();
-				//fragmentSpec.setArguments(arguments);
+				fragmentSpec.setArguments(arguments);
 				getActivity().
 				getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, fragmentSpec).commit();
 				

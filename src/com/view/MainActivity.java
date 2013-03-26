@@ -1,14 +1,19 @@
 package com.view;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Intent;
+import android.graphics.PixelFormat;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.widget.Toast;
+import android.view.WindowManager;
 
+import com.helper.NetworkBackground;
 import com.model.Dish;
 import com.model.Model;
 import com.view.menu.CategoryFragment;
@@ -43,7 +48,7 @@ public class MainActivity extends FragmentActivity implements ItemListFragment.C
 	  }
 
 	private boolean mTwoPane;
-	Model model;
+	public Model model;
 	/** all dishes in restaurant system */
 	public List<Dish> dishes;
 	
@@ -51,21 +56,34 @@ public class MainActivity extends FragmentActivity implements ItemListFragment.C
 	public List<Dish> currentDishes = new ArrayList<Dish>();
 	
 	/** all dishes that user has selected */
-	public List<Dish> selectedDishes = new ArrayList<Dish>();
+	public Map<String, Dish> selectedDishes = new HashMap<String, Dish>();
+	
+	/** total price that user has selected */
+	public double price = 0;
 	
 	/** load all data need from server */
 	public MainActivity() {
 		
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getWindow().setFormat(PixelFormat.RGBA_8888);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DITHER);
 
 		
 		// read data
 		model = new Model(this);
-		model.parsingJSONFood();
+		
+		/** 
+		 * make this work on asyntask
+		 * model.parsingJSONFood()
+		 * move this code into aysnctask
+		 */
+		AsyncTask task = new NetworkBackground(this).execute();
+		
 		dishes = model.getDishes();
 		
 		// download all image
@@ -85,16 +103,12 @@ public class MainActivity extends FragmentActivity implements ItemListFragment.C
 					R.id.item_list)).setActivateOnItemClick(true);
 		}
 		
-		// debug information
-		/*Toast.makeText(getApplicationContext(),
-				   "Size of dishes: " + dishes.size(), 
-				   Toast.LENGTH_LONG).show();*/
 	}
 
 	/**
 	 * Callback method from {@link ItemListFragment.Callbacks} indicating that
 	 * the item with the given ID was selected.
-	 */
+	 */    
 	@Override
 	public void onItemSelected(String id) {
 		if (mTwoPane) {

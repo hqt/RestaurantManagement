@@ -42,6 +42,7 @@ public class LoginFragment extends Fragment {
 				
 				if (username.equals("root") && password.equals("duyeu")) {
 					Bundle arguments = new Bundle();
+					arguments.putString(ItemDetailFragment.ARG_ITEM_ID, "item_id"); 
 					ItemDetailFragment fragmentSpec = new ItemDetailFragment();
 					fragmentSpec.setArguments(arguments);
 					getActivity().

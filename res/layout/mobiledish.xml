@@ -13,22 +13,43 @@
         android:src="@drawable/ic_launcher" >
     </ImageView>
  
-    <TextView
-        android:id="@+id/grid_item_label_dish"
+    <LinearLayout 
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@+id/label"
-        android:layout_marginTop="2px"
-        android:textSize="20px" >
-    </TextView>
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	    android:padding="2dp" >
+	    
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:padding="2dp" >
+	        <TextView
+	            android:id="@+id/grid_item_label_dish"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@+id/label"
+	            android:layout_marginTop="2px"
+	            android:textSize="20px" >
+            </TextView>
     
-    <TextView
-        android:id="@+id/grid_item_price_dish"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@+id/label"
-        android:layout_marginTop="2px"
-        android:textSize="20px" >
-    </TextView>
+            <TextView
+            android:id="@+id/grid_item_price_dish"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@+id/label"
+	            android:layout_marginTop="2px"
+	            android:textSize="20px" >
+            </TextView>
+	    </LinearLayout>
+	    
+	     <CheckBox
+	        android:id="@+id/chkDish"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Order"
+	        android:checked="false" />
+    
+    </LinearLayout>
     
 </LinearLayout>

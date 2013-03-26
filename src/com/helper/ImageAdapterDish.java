@@ -1,8 +1,11 @@
 package com.helper;
 
+import java.io.InputStream;
 import java.util.List;
 
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,20 +54,20 @@ public class ImageAdapterDish extends BaseAdapter {
 			// assign image base on 
 			String category_name = dishValues.get(position).getImage();
 
-			Log.i("error", (category_name.toLowerCase()).toString());
+			// int asset_id = context.getResources().getIdentifier("cocacola", "drawable", context.getPackageName());
+			// imageView.setImageResource(asset_id);
 			
-			int asset_id = context.getResources().getIdentifier("cocacola", "drawable", context.getPackageName());
-			
-			imageView.setImageResource(asset_id);
-			
-			/*if (asset_id > 0) {
-				imageView.setImageResource(asset_id);
+			AssetManager assetManager = context.getAssets();
+
+	        InputStream istr;   
+			try {
+				 istr = assetManager.open(category_name);
+				 Drawable d = Drawable.createFromStream(istr, null);
+				 imageView.setImageDrawable(d);
+			     istr.close();
+			} catch (Exception e) {
+				Log.i("error", "Error when select icon");
 			}
-			else {
-				// cannot read, make default
-				asset_id = context.getResources().getIdentifier("ic", "drawable", context.getPackageName());
-				imageView.setImageResource(asset_id);
-			}*/
  
 		} else {
 			gridView = (View) convertView;

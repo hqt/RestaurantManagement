@@ -19,6 +19,8 @@ public class MenuLeftList {
 		addCategory(new Category("cook", "Cook"));
 		addCategory(new Category("manager", "Manager"));
 		addCategory(new Category("about", "About"));
+		addCategory(new Category("setting", "Setting"));
+		addCategory(new Category("accept", "Accept"));
 	}
 
 	private static void addCategory(Category item) {

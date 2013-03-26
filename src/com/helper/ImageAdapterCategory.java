@@ -1,6 +1,10 @@
 package com.helper;
 
+import java.io.InputStream;
+
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,14 +45,24 @@ public class ImageAdapterCategory extends BaseAdapter {
 			// set image based on selected text
 			ImageView imageView = (ImageView) gridView.findViewById(R.id.grid_item_image);
 			
-			// assign image base on 
-			String category_name = categoryValues[position];
+			
+			/*int asset_id = context.getResources().getIdentifier("food", "drawable", context.getPackageName());
+			imageView.setImageResource(asset_id);*/
+			
+			AssetManager assetManager = context.getAssets();
 
-			Log.i("error", (category_name.toLowerCase() + ".jpg").toString());
+	        InputStream istr;   
+			try {
+				 istr = assetManager.open(categoryValues[position] + ".jpg");
+				 Drawable d = Drawable.createFromStream(istr, null);
+				 imageView.setImageDrawable(d);
+			     istr.close();
+			} catch (Exception e) {
+				Log.i("error", "Error when select icon");
+			}
+	       
 			
-			int asset_id = context.getResources().getIdentifier("food", "drawable", context.getPackageName());
 			
-			imageView.setImageResource(asset_id);
 			
 			/*if (asset_id > 0) {
 				imageView.setImageResource(asset_id);

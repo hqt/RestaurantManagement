@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.helper.LazyAdapter;
 import com.model.MenuLeftList;
 
 /**
@@ -75,10 +76,13 @@ public class ItemListFragment extends ListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		LazyAdapter adapter=new LazyAdapter(this, MenuLeftList.CATEGORIES);
+		setListAdapter(adapter);
 
-		setListAdapter(new ArrayAdapter<MenuLeftList.Category>(getActivity(),
+		/*setListAdapter(new ArrayAdapter<MenuLeftList.Category>(getActivity(),
 				android.R.layout.simple_list_item_activated_1,
-				android.R.id.text1, MenuLeftList.CATEGORIES));
+				android.R.id.text1, MenuLeftList.CATEGORIES));*/
 	}
 
 	@Override

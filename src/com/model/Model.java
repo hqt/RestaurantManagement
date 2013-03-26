@@ -13,12 +13,9 @@ import org.json.JSONObject;
 
 import android.content.res.AssetManager;
 import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.helper.JSONParser;
 import com.view.MainActivity;
-import com.view.R;
 
 public class Model {
 	
@@ -49,7 +46,7 @@ public class Model {
 	/**
 	 * parse real json
 	 */
-	public void parsingJSONFood() {
+	public void parsingJSONFood() {       
 
 		// Hashmap for ListView
         ArrayList<HashMap<String, String>> contactList = new ArrayList<HashMap<String, String>>();
@@ -61,22 +58,18 @@ public class Model {
         JSONParser jParser = new JSONParser();
  
         /**
-         * getting json from url
+         * getting json from url    
          * this networking code is hard and done by JSONParse class
          */
         // JSONObject json = jParser.getJSONFromUrl(url);
-        readFromFile();
+        //String sample = jParser.getJSONFromUrl(url);
         
-        JSONObject json = null;
-		try {
-			json = new JSONObject(sample);
-		} catch (JSONException e1) {
-			e1.printStackTrace();
-		}
+        /** using read from file for testing pupose */
+        readFromFile();
         
 		try {       
 			
-            // Getting Array of Foods
+            // Getting Array of Foods 
             dishes = new JSONArray(sample);
             
             // looping through All Contacts

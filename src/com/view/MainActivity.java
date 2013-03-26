@@ -44,8 +44,14 @@ public class MainActivity extends FragmentActivity implements ItemListFragment.C
 
 	private boolean mTwoPane;
 	Model model;
+	/** all dishes in restaurant system */
 	public List<Dish> dishes;
+	
+	/** filter of dishes for screen view */
 	public List<Dish> currentDishes = new ArrayList<Dish>();
+	
+	/** all dishes that user has selected */
+	public List<Dish> selectedDishes = new ArrayList<Dish>();
 	
 	/** load all data need from server */
 	public MainActivity() {

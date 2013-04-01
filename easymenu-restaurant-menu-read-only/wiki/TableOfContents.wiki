@@ -1,3 +1,0 @@
- * [Documentation Easymenu Documentation]
-   * [Server Easymenu Server]
-   * [Client Easymenu Client]

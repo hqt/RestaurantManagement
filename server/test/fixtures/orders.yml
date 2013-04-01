@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  id: 1
+  date_create: MyText
+  table: 1
+  status: MyString
+  dishes: MyString
+  price: 9.99
+  currency: MyString
+
+two:
+  id: 1
+  date_create: MyText
+  table: 1
+  status: MyString
+  dishes: MyString
+  price: 9.99
+  currency: MyString

@@ -2,7 +2,6 @@ package com.helper;
 
 import java.util.List;
 
-import android.app.ListFragment;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.model.MenuLeftList;
 import com.model.MenuLeftList.Category;
 import com.view.ItemListFragment;
 import com.view.R;
@@ -18,18 +18,6 @@ import com.view.R.drawable;
 
 public class LazyAdapter extends BaseAdapter {
 	
-	public static enum LeftMenuCategories {
-	    MENU,
-	    ORDER,
-	    WAITER,
-	    COOK,
-	    MANAGER,
-	    SETTING,
-	    ABOUT,
-	    ACCEPT
-	  }
-	
-    
     private ItemListFragment activity;
     private List<Category> data;
     private static LayoutInflater inflater=null;
@@ -61,7 +49,7 @@ public class LazyAdapter extends BaseAdapter {
         title.setText(data.get(position).toString());
         
         ImageView thumb_image=(ImageView)vi.findViewById(R.id.list_image); // thumb image
-        LeftMenuCategories choice = LeftMenuCategories.valueOf(data.get(position).id.toUpperCase());
+        MenuLeftList.LeftMenuCategories choice =  MenuLeftList.LeftMenuCategories.valueOf(data.get(position).id.toUpperCase());
         switch (choice) {
         	case MENU:
         		thumb_image.setImageResource(drawable.menu);
@@ -69,8 +57,13 @@ public class LazyAdapter extends BaseAdapter {
         	case ORDER:
         		thumb_image.setImageResource(drawable.order);
         		break;
+        	case HOST:
+        		thumb_image.setImageResource(drawable.receptionist);
         	case WAITER:
         		thumb_image.setImageResource(drawable.waiter);
+        		break;
+        	case BUSBOY:
+        		thumb_image.setImageResource(drawable.busboy);
         		break;
         	case COOK:
         		thumb_image.setImageResource(drawable.cook);
@@ -84,7 +77,8 @@ public class LazyAdapter extends BaseAdapter {
         	case ABOUT:
         		thumb_image.setImageResource(drawable.about);
         		break;
-        	case ACCEPT:
+        	default:
+        		break;
         }
 
         return vi;

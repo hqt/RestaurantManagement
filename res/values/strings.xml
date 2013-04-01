@@ -9,5 +9,13 @@
     <string name="title_activity_category_fragment">CategoryFragment</string>
     <string name="title_activity_food_detail_list">FoodDetailList</string>
     <string name="title_activity_dish_selection_fragment">DishSelectionFragment</string>
+    <string name="title_activity_waiter_view_fragment">WaiterViewFragment</string>
+    <string name="title_activity_order_fragment">OrderFragment</string>
+    <string name="title_activity_description_screen_fragment">DescriptionScreenFragment</string>
+    <string name="title_activity_manager_fragment">ManagerFragment</string>
+    <string name="title_activity_default_right_fragment">DefaultRightFragment</string>
+    <string name="title_activity_about_fragment">AboutFragment</string>
+    <string name="title_activity_order_detail_fragment">Order Detail</string>
+    <string name="title_activity_graph_fragment">GraphFragment</string>
 
 </resources>

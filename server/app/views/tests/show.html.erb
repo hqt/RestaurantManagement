@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Username:</b>
+  <%= @test.username %>
+</p>
+
+<p>
+  <b>Id:</b>
+  <%= @test.id %>
+</p>
+
+
+<%= link_to 'Edit', edit_test_path(@test) %> |
+<%= link_to 'Back', tests_path %>

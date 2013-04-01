@@ -6,17 +6,25 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.WindowManager;
 
-import com.helper.NetworkBackground;
 import com.model.Dish;
+import com.model.MenuLeftList;
 import com.model.Model;
+import com.view.busboy.BusboyViewFragment;
+import com.view.cook.CookFragment;
+import com.view.host.HostViewFragment;
+import com.view.manager.LoginManager;
 import com.view.menu.CategoryFragment;
+import com.view.order.OrderFragment;
+import com.view.waiter.WaiterViewFragment;
 
 /**
  * An activity representing a list of Items. This activity has different
@@ -35,22 +43,8 @@ import com.view.menu.CategoryFragment;
  */
 public class MainActivity extends FragmentActivity implements ItemListFragment.Callbacks {
 	
-	/** using enum for switch case */
-	public static enum LeftMenuCategories {
-	    MENU,
-	    ORDER,
-	    WAITER,
-	    COOK,
-	    MANAGER,
-	    SETTING,
-	    ABOUT,
-	    ACCEPT
-	  }
-
 	private boolean mTwoPane;
 	public Model model;
-	/** all dishes in restaurant system */
-	public List<Dish> dishes;
 	
 	/** filter of dishes for screen view */
 	public List<Dish> currentDishes = new ArrayList<Dish>();
@@ -61,33 +55,71 @@ public class MainActivity extends FragmentActivity implements ItemListFragment.C
 	/** total price that user has selected */
 	public double price = 0;
 	
+	/** link for all system */
+	public static String server = "http://10.0.2.2:3000";
+	
+	/** default table for system */
+	public static int tableno = 1;
+	
 	/** load all data need from server */
 	public MainActivity() {
-		
 	}
 
+	boolean DEVELOPER_MODE = true;
+	
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
+		if (DEVELOPER_MODE) {
+	         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+	                 .detectDiskReads()
+	                 .detectDiskWrites()
+	                 .detectNetwork()   // or .detectAll() for all detectable problems
+	                 .penaltyLog()
+	                 .build());
+	         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+	                 .detectLeakedSqlLiteObjects()
+	                 .detectLeakedClosableObjects()
+	                 .penaltyLog()
+	                 .penaltyDeath()
+	                 .build());
+	     }
+		
 		super.onCreate(savedInstanceState);
 		getWindow().setFormat(PixelFormat.RGBA_8888);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DITHER);
 
-		
-		// read data
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+		 // read data
 		model = new Model(this);
 		
 		/** 
 		 * make this work on asyntask
 		 * model.parsingJSONFood()
+		 * model.updateTable()
 		 * move this code into aysnctask
-		 */
-		AsyncTask task = new NetworkBackground(this).execute();
-		
-		dishes = model.getDishes();
+		 */          
+		AsyncTask downloadtask = new ModelAsynTask(this).execute();
 		
 		// download all image
 		
+		// test upload
+		/*String url = "http://10.0.2.2:3000/tests";
+		Map<String, String> values = new HashMap<String, String>();
+		values.put("test[username]", "thao");
+		values.put("test[id]", "1993");
+		AsyncTask uploadtask = new SendingPostRequest(this, url, values).execute();
+		*/
+		
+		
+		/** .
+		 * after all transaction
+		 * assign to dishes of MainActivity
+		 * this design pattern should apply for all later !!! 
+		 */
+		// dishes = model.getDishes();
 		setContentView(R.layout.activity_item_list);
 
 		if (findViewById(R.id.item_detail_container) != null) {
@@ -101,6 +133,10 @@ public class MainActivity extends FragmentActivity implements ItemListFragment.C
 			// 'activated' state when touched.
 			((ItemListFragment) getSupportFragmentManager().findFragmentById(
 					R.id.item_list)).setActivateOnItemClick(true);
+			
+			/** set default screen for right fragment */
+			DefaultRightFragment fragment = new DefaultRightFragment();
+			getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, fragment).commit();
 		}
 		
 	}
@@ -117,28 +153,52 @@ public class MainActivity extends FragmentActivity implements ItemListFragment.C
 			Bundle arguments = new Bundle();
 			arguments.putString(ItemDetailFragment.ARG_ITEM_ID, id); // ("item_id", id)
 			
-			LeftMenuCategories choice = LeftMenuCategories.valueOf(id.toUpperCase());
+			MenuLeftList.LeftMenuCategories choice = MenuLeftList.LeftMenuCategories.valueOf(id.toUpperCase());
 			switch (choice) {
 				case MENU:
 					CategoryFragment fragment1 = new CategoryFragment();
-					Log.i("tag", "step one");
 					fragment1.setArguments(arguments);
 					getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, fragment1).commit();
 					break;
 				case ORDER:
-					LoginFragment fragment2 = new LoginFragment();
-					Log.i("tag", "step one");
+					OrderFragment fragment2 = new OrderFragment();
 					fragment2.setArguments(arguments);
 					getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, fragment2).commit();
 					break;
-					// from this will not implement
+				case HOST:
+					HostViewFragment hostViewFragment = new HostViewFragment();
+					hostViewFragment.setArguments(arguments);
+					getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, hostViewFragment).commit();
+					break;
 				case WAITER:
+					WaiterViewFragment waiterViewFragment = new WaiterViewFragment();
+					waiterViewFragment.setArguments(arguments);
+					getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, waiterViewFragment).commit();
+					break;   
+				case BUSBOY:
+					BusboyViewFragment busboyViewFragment = new BusboyViewFragment();
+					busboyViewFragment.setArguments(arguments);
+					getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, busboyViewFragment).commit();
+					break;   
 				case COOK:
+					CookFragment cookFragment = new CookFragment();
+					cookFragment.setArguments(arguments);
+					getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, cookFragment).commit();
+					break;
 				case MANAGER:
+					LoginManager loginManager = new LoginManager();
+					loginManager.setArguments(arguments);
+					getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, loginManager).commit();
+					break;
+				case SETTING:
+					SettingFragment settingFragment = new SettingFragment();
+					settingFragment.setArguments(arguments);
+					getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, settingFragment).commit();
+					break;
 				case ABOUT:
-					ItemDetailFragment fragmentSpec = new ItemDetailFragment();
-					fragmentSpec.setArguments(arguments);
-					getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, fragmentSpec).commit();
+					AboutFragment aboutFragment = new AboutFragment();
+					aboutFragment.setArguments(arguments);
+					getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, aboutFragment).commit();
 					break;
 			default:
 				break;
@@ -148,7 +208,7 @@ public class MainActivity extends FragmentActivity implements ItemListFragment.C
 			 * In single-pane mode, simply start the detail activity for the selected item ID.
 			 * Using intent to call another activity
 			 */
-			LeftMenuCategories choice = LeftMenuCategories.valueOf(id.toUpperCase());
+			MenuLeftList.LeftMenuCategories choice = MenuLeftList.LeftMenuCategories.valueOf(id.toUpperCase());
 			switch (choice) {
 				case MENU:
 					break;
@@ -169,7 +229,7 @@ public class MainActivity extends FragmentActivity implements ItemListFragment.C
 		}
 	}
 	
-	public List<Dish> getDish() { return dishes; }
+	public List<Dish> getDish() { return model.getDishes(); }
 	public void setCurrentDish(List<Dish> currentDishes) { 
 		this.currentDishes = currentDishes;
 	}

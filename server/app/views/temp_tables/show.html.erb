@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @temp_table.name %>
+</p>
+
+<p>
+  <b>Id:</b>
+  <%= @temp_table.id %>
+</p>
+
+
+<%= link_to 'Edit', edit_temp_table_path(@temp_table) %> |
+<%= link_to 'Back', temp_tables_path %>

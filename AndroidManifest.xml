@@ -46,6 +46,42 @@
             android:name="com.view.menu.DishSelectionFragment"
             android:label="@string/title_activity_dish_selection_fragment" >
         </activity>
+        <activity
+            android:name="com.view.busboy.BusboyViewFragment"
+            android:label="@string/title_activity_waiter_view_fragment" >
+        </activity>
+        <activity
+            android:name="com.view.SettingFragment"
+            android:label="@string/title_activity_setting_fragment" >
+        </activity>
+        <activity
+            android:name="com.view.order.OrderFragment"
+            android:label="@string/title_activity_order_fragment" >
+        </activity>
+        <activity
+            android:name="com.view.menu.DescriptionScreenFragment"
+            android:label="@string/title_activity_description_screen_fragment" >
+        </activity>
+        <activity
+            android:name="com.view.manager.ManagerFragment"
+            android:label="@string/title_activity_manager_fragment" >
+        </activity>
+        <activity
+            android:name="com.view.DefaultRightFragment"
+            android:label="@string/title_activity_default_right_fragment" >
+        </activity>
+        <activity
+            android:name="com.view.AboutFragment"
+            android:label="@string/title_activity_about_fragment" >
+        </activity>
+        <activity
+            android:name="com.view.cook.OrderDetailFragment"
+            android:label="@string/title_activity_order_detail_fragment" >
+        </activity>
+        <activity
+            android:name="com.view.manager.GraphFragment"
+            android:label="@string/title_activity_graph_fragment" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" >

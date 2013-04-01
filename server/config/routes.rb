@@ -1,4 +1,29 @@
 Server::Application.routes.draw do
+
+  resources :tables
+  # return all rows that in free / busy / dirty state
+  match 'tables/filter/free', :controller=>'tables', :action=>'free'
+  match 'tables/filter/busy', :controller=>'tables', :action=>'busy'
+  match 'tables/filter/dirty', :controller=>'tables', :action=>'dirty'
+  # modify status of ta table with :id, from free -> busy / busy -> dirty / dirty -> free (view code for clearer)
+  match 'tables/changes/free/:id', :controller=>'tables', :action=>'change_free_status'
+  match 'tables/changes/busy/:id', :controller=>'tables', :action=>'change_busy_status'
+  match 'tables/changes/dirty/:id',:controller=>'tables', :action=>'change_dirty_status'
+
+
+  resources :orders
+  # return all rows that in waiting / prepare state
+  match 'orders/filter/waiting/', :controller=>'orders', :action=>'waiting'
+  match 'orders/filter/prepare/', :controller=>'orders', :action=>'prepare'
+  # modify status of order with :id, from waiting -> prepare or from prepare -> finish (view code for clearer)
+  match 'orders/changes/waiting/:id', :controller=>'orders', :action=>'change_waiting_status'
+  match 'orders/changes/prepare/:id', :controller=>'orders', :action=>'change_prepare_status'
+
+  resources :tests
+
+
+  resources :temps
+
   resources :temp_tables
 
   resources :dishes

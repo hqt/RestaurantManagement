@@ -7,14 +7,15 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.helper.ImageAdapterDish;
 import com.model.Dish;
 import com.view.MainActivity;
 import com.view.R;
@@ -28,9 +29,6 @@ public class DishSelectionFragment extends Fragment {
 	MainActivity activity;
 	TextView txtPrice;
 	String[] CATEGORIES;
-	
-	static final String[] SAMPLE = new String[] {
-		"android", "ios" };
 	
 	public DishSelectionFragment() {
 	}
@@ -62,7 +60,7 @@ public class DishSelectionFragment extends Fragment {
 		gridView.setAdapter(new ImageAdapterDish(this, getActivity(), activity.currentDishes));
 		
 		txtPrice = (TextView) (rootView).findViewById(R.id.text_price_dish);
-		txtPrice.setText("HuynhQuangThao");
+		txtPrice.setText("Price : " + activity.price);
 		
 		gridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -73,6 +71,28 @@ public class DishSelectionFragment extends Fragment {
 				   ((TextView) v.findViewById(R.id.grid_item_label_dish)).getText(), 
 				   Toast.LENGTH_SHORT).show();
 				
+			}
+		});
+		
+		Button btnOrder = (Button) (rootView).findViewById(R.id.btnOrder);
+		btnOrder.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				DescriptionScreenFragment fragmentSpec = new DescriptionScreenFragment();
+				activity.getSupportFragmentManager().beginTransaction().
+				replace(R.id.item_detail_container, fragmentSpec).commit();
+				
+			}
+		});
+		
+		Button btnBack = (Button) (rootView).findViewById(R.id.btnBack);
+		btnBack.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				CategoryFragment fragment = new CategoryFragment();
+				activity.getSupportFragmentManager().beginTransaction().
+				replace(R.id.item_detail_container, fragment).commit();
 			}
 		});
 		

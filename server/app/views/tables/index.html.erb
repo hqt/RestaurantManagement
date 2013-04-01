@@ -1,0 +1,27 @@
+<h1>Listing tables</h1>
+
+<table>
+  <tr>
+    <th>Id</th>
+    <th>No</th>
+    <th>Status</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @tables.each do |table| %>
+  <tr>
+    <td><%= table.id %></td>
+    <td><%= table.no %></td>
+    <td><%= table.status %></td>
+    <td><%= link_to 'Show', table %></td>
+    <td><%= link_to 'Edit', edit_table_path(table) %></td>
+    <td><%= link_to 'Destroy', table, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Table', new_table_path %>

@@ -7,6 +7,7 @@ one:
   Discount: 9.99
   Currency: MyString
   Tag: MyString
+  BuyNum: MyString
   DishImage: MyString
   Description: MyText
 
@@ -17,5 +18,6 @@ two:
   Discount: 9.99
   Currency: MyString
   Tag: MyString
+  BuyNum: MyString
   DishImage: MyString
   Description: MyText

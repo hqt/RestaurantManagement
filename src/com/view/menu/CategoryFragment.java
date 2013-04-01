@@ -14,7 +14,6 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.helper.ImageAdapterCategory;
 import com.model.Dish;
 import com.view.MainActivity;
 import com.view.R;
@@ -43,7 +42,7 @@ public class CategoryFragment extends Fragment {
 		
 		View rootView = inflater.inflate(R.layout.category_fragment, container, false);
 		
-		gridView = (GridView) (rootView).findViewById(R.id.gridView1);
+		gridView = (GridView) (rootView).findViewById(R.id.gridView1); 
 		gridView.setAdapter(new ImageAdapterCategory(getActivity(), CATEGORIES));
 		
 		gridView.setOnItemClickListener(new OnItemClickListener() {

@@ -7,6 +7,21 @@ import java.util.Map;
 
 public class MenuLeftList {
 	
+	/** using enum for switch case */
+	public static enum LeftMenuCategories {
+	    MENU,
+	    ORDER,
+	    HOST,
+	    WAITER,
+	    BUSBOY,
+	    COOK,
+	    MANAGER,
+	    SETTING,
+	    ABOUT,
+	    ACCEPT
+	  }
+	
+	
 	public static List<Category> CATEGORIES = new ArrayList<Category>();
 
 	public static Map<String, Category> CATEGORIES_MAP = new HashMap<String, Category>();
@@ -15,12 +30,13 @@ public class MenuLeftList {
 		// Add sample items.
 		addCategory(new Category("menu", "Menu"));
 		addCategory(new Category("order", "Order"));
+		addCategory(new Category("host", "Host"));
 		addCategory(new Category("waiter", "Waiter"));
+		addCategory(new Category("busboy", "Busboy"));
 		addCategory(new Category("cook", "Cook"));
 		addCategory(new Category("manager", "Manager"));
 		addCategory(new Category("about", "About"));
 		addCategory(new Category("setting", "Setting"));
-		addCategory(new Category("accept", "Accept"));
 	}
 
 	private static void addCategory(Category item) {
@@ -40,6 +56,6 @@ public class MenuLeftList {
 		@Override
 		public String toString() {
 			return content;
-		}
+		} 
 	}
 }

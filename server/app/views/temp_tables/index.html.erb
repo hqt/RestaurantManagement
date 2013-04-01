@@ -1,0 +1,25 @@
+<h1>Listing temp_tables</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Id</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @temp_tables.each do |temp_table| %>
+  <tr>
+    <td><%= temp_table.name %></td>
+    <td><%= temp_table.id %></td>
+    <td><%= link_to 'Show', temp_table %></td>
+    <td><%= link_to 'Edit', edit_temp_table_path(temp_table) %></td>
+    <td><%= link_to 'Destroy', temp_table, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Temp table', new_temp_table_path %>

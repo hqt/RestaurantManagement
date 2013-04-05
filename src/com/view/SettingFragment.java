@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 
@@ -41,10 +42,12 @@ public class SettingFragment extends Fragment {
 		Button okButton = (Button) (rootView).findViewById(R.id.okBtn);
 		final EditText serverLink = (EditText) (rootView).findViewById(R.id.serverlink);
 		final EditText tableNo = (EditText) (rootView).findViewById(R.id.tableno);
+		final CheckBox checkbox = (CheckBox) (rootView).findViewById(R.id.chkBox);
 		
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
 		serverLink.setText(preferences.getString("serverlink", "localhost"));
 		tableNo.setText(preferences.getInt("tableno", 1) + "");
+		checkbox.setChecked(preferences.getBoolean("customermode", false));
 		
 		
 		okButton.setOnClickListener(new View.OnClickListener() {
@@ -53,10 +56,12 @@ public class SettingFragment extends Fragment {
 			public void onClick(View v) {
 				String serverText = serverLink.getText().toString();
 				String tableText = tableNo.getText().toString();
+				Boolean isChecked = checkbox.isChecked();
 				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
 				Editor edit = preferences.edit();
 				edit.putString("serverlink", serverText);
 				edit.putInt("tableno", Integer.parseInt(tableText));
+			    edit.putBoolean("customermode", isChecked);
 				edit.commit(); 
 				
 			}

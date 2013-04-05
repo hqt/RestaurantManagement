@@ -69,11 +69,11 @@ public class Model {
          * this networking code is hard and done by JSONParse class
          */
         // JSONObject json = jParser.getJSONFromUrl(url);
-        String sample = jParser.getJSONFromUrl(url);
+        sample = jParser.getJSONFromUrl(url);
         Log.i("debug", sample);
         
         /** using read from file for testing pupose */
-        // readFromFile();
+        //readFromFile();
         
         // contacts JSONArray
     	JSONArray dishes = null;
@@ -83,7 +83,7 @@ public class Model {
              dishes = new JSONArray(sample);
              
              // looping through All Contacts
-             for(int i = 0; i < dishes.length(); i++){
+             for(int i = 0; i < dishes.length(); i++){   
                  JSONObject c = dishes.getJSONObject(i);
   
                  // Storing each json item in variable
@@ -130,8 +130,10 @@ public class Model {
         JSONParser jParser = new JSONParser();
  
         String url = MainActivity.server + "/" + "tables.json";
-        String sample = jParser.getJSONFromUrl(url);
+        sample = jParser.getJSONFromUrl(url);
         Log.i("debug", sample);
+        
+        //readTableFromFile();
         
         JSONArray jsonArrayTable = null;
     	 try {       
@@ -143,7 +145,7 @@ public class Model {
              for(int i = 0; i < jsonArrayTable.length(); i++){
                  JSONObject c = jsonArrayTable.getJSONObject(i);
   
-                 // Storing each json item in variable
+                 // Storing each json item in variable  
                  int id = c.getInt(TABLE_ID);
                  int no = c.getInt(TABLE_NO);
                  String status = c.getString(TABLE_STATUS);
@@ -157,14 +159,26 @@ public class Model {
          }
 		
 	}
-	
-	
-	
+		
 	
 	public void readFromFile() {
 		AssetManager am = activity.getAssets();
 		try {
 			InputStream is = am.open("sample.json");
+			Scanner scanner = new Scanner(is);
+			sample = scanner.nextLine();
+			
+			Log.d("Debug", sample);
+			
+		} catch (IOException e) {
+			Log.i("error", "Cannot read file");
+		}
+	}
+	
+	public void readTableFromFile() {
+		AssetManager am = activity.getAssets();
+		try {
+			InputStream is = am.open("table.json");
 			Scanner scanner = new Scanner(is);
 			sample = scanner.nextLine();
 			

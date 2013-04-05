@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +23,10 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.model.Dish;
+import com.view.DefaultRightFragment;
 import com.view.MainActivity;
+import com.view.R;
 
 public class SendingPostRequest extends  AsyncTask<String, Void, String> {
 	
@@ -52,6 +56,15 @@ public class SendingPostRequest extends  AsyncTask<String, Void, String> {
 	 
 	 @Override
 	protected void onPostExecute(String result) {
+		 
+		// reset all data
+		activity.selectedDishes = new HashMap<String, Dish>();
+		activity.price = 0;
+		activity.currentDishes = new ArrayList<Dish>();
+					
+		DefaultRightFragment fragment = new DefaultRightFragment();
+		activity.getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, fragment).commit();
+			
 		super.onPostExecute(result);
 		
 		if (dialog.isShowing()) {
@@ -112,7 +125,7 @@ public class SendingPostRequest extends  AsyncTask<String, Void, String> {
 				 * therefore we can't initialize them
 				 */
 				HttpResponse httpResponse = httpClient.execute(httpPost);
-
+				
 				/**
 				 * according to the JAVA API, InputStrem constructor do nothing.
 				 * So we can't initialize InputStrem although it is not an interface
@@ -146,6 +159,8 @@ public class SendingPostRequest extends  AsyncTask<String, Void, String> {
 			System.out.println("An Exception given because of UrlEncodedFormEntity argument :" + uee);
 			uee.printStackTrace();
 		}
+		
+		
 
 		return null;
 	}

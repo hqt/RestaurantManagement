@@ -17,5 +17,7 @@
     <string name="title_activity_about_fragment">AboutFragment</string>
     <string name="title_activity_order_detail_fragment">Order Detail</string>
     <string name="title_activity_graph_fragment">GraphFragment</string>
+    <string name="title_activity_dish_management_fragment">DishManagementFragment</string>
+    <string name="title_activity_dish_detail_fragment">DishDetailFragment</string>
 
 </resources>

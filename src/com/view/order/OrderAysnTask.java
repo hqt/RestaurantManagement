@@ -6,18 +6,27 @@ import com.view.MainActivity;
 
 public class OrderAysnTask extends NetworkBackground {
 
-	OrderFragment fragment;
+	OrderFragment father;
 	
-	public OrderAysnTask(MainActivity activity, OrderFragment fragment) {
+	public OrderAysnTask(MainActivity activity, OrderFragment father) {
 		super(activity);
-		this.fragment = fragment;
+		this.father = father;
+	}
+	
+	@Override
+	protected void onPostExecute(Boolean success) {
+
+		/// notice change
+		father.adapter.notifyDataSetChanged();
+		
+		super.onPostExecute(success);
 	}
 
 	@Override
 	protected Boolean doInBackground(String... urls) {
 		this.dialog.show();
 		String url = urls[0];
-		fragment.orders = Order.loadServerOrders(url);
+		father.orders = Order.loadServerOrders(url);
 		return true;
 	}
 	

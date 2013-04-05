@@ -49,7 +49,10 @@ public class CookAdapter extends ArrayAdapter<Order>{
         }
         
         Order order = father.orders.get(position);
+        /** set image */
         holder.imgIcon.setImageResource(R.drawable.freeorder);
+        
+        /** set text */
         holder.txtTitle.setText("Table " + order.getTable() + " is preparing");
         
         return row;

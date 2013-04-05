@@ -47,7 +47,7 @@ class TablesController < ApplicationController
         format.html { redirect_to @table, notice: 'Table was successfully created.' }
         format.json { render json: @table, status: :created, location: @table }
       else
-        format.html { render action: "new" }
+        format.html { render action: 'new' }
         format.json { render json: @table.errors, status: :unprocessable_entity }
       end
     end
@@ -63,7 +63,7 @@ class TablesController < ApplicationController
         format.html { redirect_to @table, notice: 'Table was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.json { render json: @table.errors, status: :unprocessable_entity }
       end
     end
@@ -141,9 +141,6 @@ class TablesController < ApplicationController
         format.json { render :json => @table }
       end
     end
-
-
-
 
   end
 end

@@ -1,15 +1,10 @@
 package com.view.cook;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
-
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -21,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.model.Order;
@@ -42,7 +38,7 @@ public class CookFragment extends Fragment {
 	private ListView listView1;
 	
 	/** list all orders to display */
-	public List<Order> orders;
+	public List<Order> orders = new ArrayList<Order>();
 	
 	/** adapter for this list */
 	CookAdapter adapter;
@@ -52,6 +48,7 @@ public class CookFragment extends Fragment {
 	
 	/** timer to make service run periodically */
 	Timer timer;
+	TimerTask timerTask;
 	
 	/** empty constructor */
 	public CookFragment() {
@@ -85,23 +82,16 @@ public class CookFragment extends Fragment {
 	    	
 	    	/** load table data from server */
 	    	final String url = MainActivity.server + "/orders/filter/prepare.json";
-	    	AsyncTask task = new CookAsynTask(activity, this).execute(url);
 	    	
-	    	/** wait for task finish */
-	    	try {
-				task.get();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-			}
-	    	
-			
 	    	adapter = new CookAdapter(activity, this, R.layout.listview_item_row, orders);
+	    	
+	    	AsyncTask task = new CookAsynTask(activity, this).execute(url);
 	    	
 	    	listView1 = (ListView) rootView.findViewById(R.id.listView1);
 
 			View header = (View) getActivity().getLayoutInflater().inflate(R.layout.listview_header_row, null);
+			TextView txtView = (TextView) (header).findViewById(R.id.txtHeader);
+	    	txtView.setText("Cook Order List ^_^");
 
 			
 			listView1.addHeaderView(header);
@@ -111,43 +101,17 @@ public class CookFragment extends Fragment {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 					
-					/// update data to server
-					Thread t = new Thread() {
-						public void run() {
-							int id = orders.get(position - 1).getId();
-							String url = MainActivity.server + "/orders/changes/prepare/" + id; 
-							HttpClient httpClient = new DefaultHttpClient();  
-							HttpGet httpGet = new HttpGet(url);
-							try {
-								httpClient.execute(httpGet);
-							} catch (ClientProtocolException e) {
-								e.printStackTrace();
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-						}
-					};
+					int idCook = orders.get(position - 1).getId();
+					String url = MainActivity.server + "/orders/changes/prepare/" + idCook;
+					new CookSendingData(activity, CookFragment.this, position).execute(url);
 					
-					t.start();
-					try {
-						t.join();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					
-					
-					/// remove from list
-					orders.remove(position - 1);
-					
-					/// notice change
-					adapter.notifyDataSetChanged();
 				}
 			});
 
 			/** make service update after periodically time */
 			//addUpdateService(url);
 			timer = new Timer();
-			TimerTask timerTask = new TimerTask() {
+			timerTask = new TimerTask() {
 				@Override
 				public void run() {
 					
@@ -158,6 +122,13 @@ public class CookFragment extends Fragment {
 					 *  Because we update adapter.
 					 *  should use on same thread creator (in this case, UI Thread)
 					 */
+					
+					if (getActivity() == null) {
+						timerTask.cancel();
+						timer.cancel();
+						return;
+					}
+					
 					getActivity().runOnUiThread(new Runnable() {
 
 						@Override
@@ -184,8 +155,17 @@ public class CookFragment extends Fragment {
 		}
 	    
 	    @Override
+		public void onHiddenChanged(boolean hidden) {
+			super.onHiddenChanged(hidden);
+			timerTask.cancel();
+			timer.cancel();
+			timer.purge();
+		}
+	    
+	    @Override
 		public void onPause() {
 			super.onPause();
+			timerTask.cancel();
 			timer.cancel();
 			timer.purge();
 		}

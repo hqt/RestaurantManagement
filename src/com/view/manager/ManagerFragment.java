@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
@@ -61,6 +62,8 @@ public class ManagerFragment extends Fragment {
 	    	listView1 = (ListView) rootView.findViewById(R.id.listView1);
 
 			View header = (View) getActivity().getLayoutInflater().inflate(R.layout.listview_header_row, null);
+			TextView txtView = (TextView) (header).findViewById(R.id.txtHeader);
+	    	txtView.setText("Management Tools");
 
 			
 			listView1.addHeaderView(header);
@@ -70,13 +73,21 @@ public class ManagerFragment extends Fragment {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 					switch (position) {
-						case 1:
+						case 2:
+							GraphFragment graphFragment = new GraphFragment();
+							activity.getSupportFragmentManager().beginTransaction().
+							replace(R.id.item_detail_container, graphFragment).commit();
+							break;
+						case 3:
+							DishManagementFragment dishManagementFragment = new DishManagementFragment();
+							activity.getSupportFragmentManager().beginTransaction().
+							replace(R.id.item_detail_container, dishManagementFragment).commit();
 							break;
 						default:
 							break;
 					}
 				}
-			});
+			}); 
 
 			return rootView;
 	    }

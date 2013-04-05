@@ -10,7 +10,6 @@ import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -18,12 +17,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.helper.SendingPostRequest;
 import com.model.Dish;
-import com.view.DefaultRightFragment;
 import com.view.MainActivity;
 import com.view.R;
 
@@ -44,6 +44,9 @@ public class DescriptionScreenFragment extends Fragment {
 	 *  Convert from Map
 	 */
 	List<Dish> orderDishes = new ArrayList<Dish>();
+	
+	/** EditText for choose table number */
+	EditText editText;
 	
 	/** must-be empty constructor */
 	public DescriptionScreenFragment() {
@@ -85,6 +88,8 @@ public class DescriptionScreenFragment extends Fragment {
     	listView1 = (ListView) rootView.findViewById(R.id.listView1);
 
 		View header = (View) getActivity().getLayoutInflater().inflate(R.layout.listview_header_row, null);
+		TextView txtView = (TextView) (header).findViewById(R.id.txtHeader);
+    	txtView.setText("Customer Order");
 		
 		listView1.addHeaderView(header);
 		listView1.setAdapter(adapter);
@@ -110,6 +115,21 @@ public class DescriptionScreenFragment extends Fragment {
 			}
 		});
 		
+		/** set table number for current order */
+		editText = (EditText) (rootView).findViewById(R.id.tableNo);
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+		Boolean isCustomer = preferences.getBoolean("customermode", true);
+		int table = preferences.getInt("tableno", 1);
+		if (isCustomer) {
+			editText.setText(table + "");
+			/// make editText cannot edit
+			editText.setEnabled(false);
+		}
+		else {
+			// not customer
+			editText.setText(table + "");
+		}
+		
 		return rootView;
 	}
 	
@@ -124,9 +144,15 @@ public class DescriptionScreenFragment extends Fragment {
 		String url = MainActivity.server + "/" + "orders";
 		
 		// take data from table
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
-		int table = preferences.getInt("tableno", 1);
-		
+		int table = 1;
+		try {
+			table = Integer.parseInt(editText.getText().toString());
+		}
+		catch (Exception e) {
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+			table = preferences.getInt("tableno", 1);
+			
+		}
 		Map<String, String> values = new HashMap<String, String>();
 		values.put("order[date_create]", time);
 		values.put("order[table]", table + "");
@@ -136,24 +162,9 @@ public class DescriptionScreenFragment extends Fragment {
 		values.put("order[currency]", "VND");    
 		
 		
-		/** .get() : waiting for this asynctask */
-		try {
-			/*AsyncTask task = new SendingPostRequest(activity, url, values);
-			Object result = task.execute().get();*/
-			new SendingPostRequest(activity, url, values).execute().get();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
+		/*AsyncTask task = new SendingPostRequest(activity, url, values);
+		Object result = task.execute().get();*/
+		new SendingPostRequest(activity, url, values).execute();
 		
-		// come back again to main screen
-		// reset all data
-		activity.selectedDishes = new HashMap<String, Dish>();
-		activity.price = 0;
-		activity.currentDishes = new ArrayList<Dish>();
-		
-		/*DefaultRightFragment fragment = new DefaultRightFragment();
-		activity.getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, fragment).commit();*/
 	}
 }

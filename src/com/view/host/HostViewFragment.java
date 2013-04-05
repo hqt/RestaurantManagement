@@ -3,10 +3,6 @@ package com.view.host;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -33,6 +29,7 @@ public class HostViewFragment extends Fragment {
 	 
 	 /** timer for update data periodically */
 	 Timer timer;
+	 TimerTask timerTask;
 	 
 	 
 	/** empty constructor */
@@ -77,34 +74,9 @@ public class HostViewFragment extends Fragment {
 				TABLE_STATUS choice = TABLE_STATUS.valueOf(getTable(position).getStatus().toUpperCase());
 				switch (choice) {
 					case FREE:
-						
-						/// update data to server
-						Thread t = new Thread() {
-							public void run() {
-								int id = getTable(position).getId();
-								String url = MainActivity.server + "/tables/changes/free/" + id; 
-								HttpClient httpClient = new DefaultHttpClient();  
-								HttpGet httpGet = new HttpGet(url);
-								try {
-									httpClient.execute(httpGet);
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
-							}
-						};
-						
-						/** starting upload to server and waiting for it */
-						t.start();
-						try {
-							t.join();
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-						
-						getTable(position).setStatus("busy");
-						
-						/// notice change
-						adapter.notifyDataSetChanged();
+						int idHost = getTable(position).getId();
+						String url = MainActivity.server + "/tables/changes/free/" + idHost; 
+						new HostSendingStatus(activity, HostViewFragment.this, position).execute(url);
 						break;
 					case BUSY:
 					case DIRTY:
@@ -116,7 +88,7 @@ public class HostViewFragment extends Fragment {
 		
 		/** make service update after periodically time */
 		timer = new Timer();
-		TimerTask timerTask = new TimerTask() {
+		timerTask = new TimerTask() {
 			@Override
 			public void run() {
 				
@@ -125,6 +97,12 @@ public class HostViewFragment extends Fragment {
 				/// MainActivity and others reference directly to this
 				///don't need do care about null point exception
 				activity.model.parsingJSONTable();
+				
+				if (getActivity() == null) {
+					timerTask.cancel();
+					timer.cancel();
+					return;
+				}
 				
 				/** Using getActivity() instead for Handler as below */
 				getActivity().runOnUiThread(new Runnable() {
@@ -139,7 +117,7 @@ public class HostViewFragment extends Fragment {
 			}
 		};
 		
-		timer.schedule(timerTask, 3000, 6000);   
+		//timer.schedule(timerTask, 3000, 6000);   
 		
 		return rootView;   
 	}
@@ -147,8 +125,17 @@ public class HostViewFragment extends Fragment {
 	
 
 	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		timerTask.cancel();
+		timer.cancel();
+		timer.purge();
+	}
+
+	@Override
 	public void onPause() {
 		super.onPause();
+		timerTask.cancel();
 		timer.cancel();
 		timer.purge();
 	}
@@ -156,4 +143,4 @@ public class HostViewFragment extends Fragment {
 	public Table getTable(int position) { return activity.model.getTables().get(position); }
 	 
 	
-}
+} 

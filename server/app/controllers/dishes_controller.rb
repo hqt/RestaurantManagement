@@ -80,4 +80,8 @@ class DishesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def change_free_status
+
+  end
 end

@@ -1,14 +1,19 @@
 Server::Application.routes.draw do
 
+  resources :dishes
+
+  match '/testDishes/:id', :controller=>'dishes', :action=>'mymethod'
+  match 'dishes/changes/free/:id', :controller=>'dishes', :action=>'change_free_status'
+
   resources :tables
+  # modify status of ta table with :id, from free -> busy / busy -> dirty / dirty -> free (view code for clearer)
+  match 'tables/changes/free/:id', :controller => 'tables', :action=>'change_free_status'
+  match 'tables/changes/busy/:id', :controller => 'tables', :action=>'change_busy_status'
+  match 'tables/changes/dirty/:id',:controller => 'tables', :action=>'change_dirty_status'
   # return all rows that in free / busy / dirty state
   match 'tables/filter/free', :controller=>'tables', :action=>'free'
   match 'tables/filter/busy', :controller=>'tables', :action=>'busy'
   match 'tables/filter/dirty', :controller=>'tables', :action=>'dirty'
-  # modify status of ta table with :id, from free -> busy / busy -> dirty / dirty -> free (view code for clearer)
-  match 'tables/changes/free/:id', :controller=>'tables', :action=>'change_free_status'
-  match 'tables/changes/busy/:id', :controller=>'tables', :action=>'change_busy_status'
-  match 'tables/changes/dirty/:id',:controller=>'tables', :action=>'change_dirty_status'
 
 
   resources :orders
@@ -26,9 +31,7 @@ Server::Application.routes.draw do
 
   resources :temp_tables
 
-  resources :dishes
 
-  match '/testDishes/:id', :controller=>'dishes', :action=>'mymethod'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

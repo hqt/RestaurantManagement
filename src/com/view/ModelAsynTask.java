@@ -13,7 +13,9 @@ public class ModelAsynTask extends NetworkBackground {
 		this.dialog.show();
 		activity.model.parsingJSONFood();
 		activity.model.parsingJSONTable();
+
 		return true;
 	}
 
 }
+   

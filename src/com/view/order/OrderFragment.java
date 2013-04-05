@@ -1,15 +1,10 @@
 package com.view.order;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
-
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -22,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.model.Order;
 import com.view.MainActivity;
@@ -43,7 +39,7 @@ public class OrderFragment extends Fragment {
 	private ListView listView1;
 	
 	/** list all orders to display */
-	public List<Order> orders;
+	public List<Order> orders = new ArrayList<Order>();
 	
 	/** adapter for this listview */
 	OrderAdapter adapter;
@@ -53,6 +49,7 @@ public class OrderFragment extends Fragment {
 	
 	/** timer to make service run periodically */
 	Timer timer;
+	TimerTask timerTask;
 	
 	/** empty constructor */
 	public OrderFragment() {
@@ -64,7 +61,7 @@ public class OrderFragment extends Fragment {
 
 			this.activity = (MainActivity) activity;
 		}
-	    
+	      
 	    @Override
 	    public void onActivityCreated(Bundle savedInstanceState) {
 	      super.onActivityCreated(savedInstanceState);
@@ -85,24 +82,17 @@ public class OrderFragment extends Fragment {
 	    	/** load table data from server */
 	    	final String url = MainActivity.server + "/orders/filter/waiting.json";
 	    	
-	    	AsyncTask task = new OrderAysnTask(activity, this).execute(url);
-	    	
-	    	/** wait for task finish */
-	    	try {
-				task.get();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-			}
-	    	
-			
 	    	adapter = new OrderAdapter(activity, this, R.layout.listview_item_row, orders);
+
+	    	/** loading data */
+	    	AsyncTask task = new OrderAysnTask(activity, this).execute(url);
 	    	
 	    	listView1 = (ListView) rootView.findViewById(R.id.listView1);
 
-			View header = (View) getActivity().getLayoutInflater().inflate(R.layout.listview_header_row, null);
-
+			
+	    	View header = (View) getActivity().getLayoutInflater().inflate(R.layout.listview_header_row, null);
+	    	TextView txtView = (TextView) (header).findViewById(R.id.txtHeader);
+	    	txtView.setText("Order List ^_^");
 			
 			listView1.addHeaderView(header);
 			listView1.setAdapter(adapter);
@@ -111,57 +101,40 @@ public class OrderFragment extends Fragment {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 					
-					/// update data to server
-					Thread t = new Thread() {
-						public void run() {
-							int id = orders.get(position - 1).getId();
-							String url = MainActivity.server + "/orders/changes/waiting/" + id; 
-							HttpClient httpClient = new DefaultHttpClient();  
-							HttpGet httpGet = new HttpGet(url);
-							try {
-								httpClient.execute(httpGet);
-							} catch (ClientProtocolException e) {
-								e.printStackTrace();
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-						}
-					};
+					int idOrder = orders.get(position - 1).getId();
 					
-					t.start();
-					try {
-						t.join();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
+					String url = MainActivity.server + "/orders/changes/waiting/" + idOrder; 
 					
+					new OrderSendingData(activity, OrderFragment.this, position).execute(url);
 					
-					/// remove from list
-					orders.remove(position - 1);
-					
-					/// notice change
-					adapter.notifyDataSetChanged();
 				}
 			});
 
 			/** make service update after periodically time */
 			//addUpdateService(url);
 			timer = new Timer();
-			TimerTask timerTask = new TimerTask() {
+			timerTask = new TimerTask() {
 				@Override
 				public void run() {
 					
-					orders = Order.loadServerOrders(url);
+					final List<Order> newOrders = Order.loadServerOrders(url);
 					
 					/**
 					 *  Using getActivity() instead for Handler as below
 					 *  Because we update adapter.
 					 *  should use on same thread creator (in this case, UI Thread)
 					 */
+					if (getActivity() == null) {
+						timerTask.cancel();
+						timer.cancel();
+						return;
+					}
+					
 					getActivity().runOnUiThread(new Runnable() {
 
 						@Override
 						public void run() {
+							orders = newOrders;
 							adapter.notifyDataSetChanged();
 							
 						}
@@ -179,13 +152,21 @@ public class OrderFragment extends Fragment {
 			};
 			
 			timer.schedule(timerTask, 3000, 6000);   
-			
 			return rootView;
 		}
 
+	    @Override
+		public void onHiddenChanged(boolean hidden) {
+			super.onHiddenChanged(hidden);
+			timerTask.cancel();
+			timer.cancel();
+			timer.purge();
+		}
+	    
 		@Override
 		public void onPause() {
 			super.onPause();
+			timerTask.cancel();
 			timer.cancel();
 			timer.purge();
 		}

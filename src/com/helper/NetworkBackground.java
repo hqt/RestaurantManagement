@@ -12,6 +12,9 @@ public abstract class NetworkBackground extends AsyncTask<String, Void, Boolean>
 	
 	/** progress dialog to show user that the backup is processing. */
     public ProgressDialog dialog;
+    
+    /** status of excute */
+    public boolean status = true;
 	
 	public NetworkBackground(MainActivity activity) {
 		this.activity = activity;
@@ -20,13 +23,17 @@ public abstract class NetworkBackground extends AsyncTask<String, Void, Boolean>
 	
 	@Override
 	 protected void onPreExecute() {
-		 this.dialog.setMessage("Progress start");
+		 this.dialog.setMessage("Progress is loading");
 		 this.dialog.show();
 	 }
 	 
 	 @Override
 	protected void onPostExecute(final Boolean success) {
-		 if (dialog.isShowing()) {
+		 
+		 if (status == false) {
+			 dialog.setMessage("Error when retrieve data from server");
+		 }
+		 else if (dialog.isShowing()) {
 			 dialog.dismiss();
 		 }
 	 }

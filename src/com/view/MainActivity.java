@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
@@ -15,6 +16,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.view.WindowManager;
 
+import com.helper.ConnectionDetector;
 import com.model.Dish;
 import com.model.MenuLeftList;
 import com.model.Model;
@@ -91,9 +93,18 @@ public class MainActivity extends FragmentActivity implements ItemListFragment.C
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DITHER);
 
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		server = preferences.getString("serverlink", "192.168.175.56:3000");
 
 		 // read data
 		model = new Model(this);
+		
+		/** detect does this device connect to internet or not */
+		ConnectionDetector detector = new ConnectionDetector(this);
+		if ( !detector.isConnectingToInternet()) {
+			ProgressDialog dialog = new ProgressDialog(this);
+			dialog.setMessage("This device now currently doesn not connect to internet");
+			dialog.show();
+		}
 		
 		/** 
 		 * make this work on asyntask
@@ -101,7 +112,7 @@ public class MainActivity extends FragmentActivity implements ItemListFragment.C
 		 * model.updateTable()
 		 * move this code into aysnctask
 		 */          
-		AsyncTask downloadtask = new ModelAsynTask(this).execute();
+		AsyncTask downloadtask = new ModelAsynTask(this).execute(server);
 		
 		// download all image
 		
